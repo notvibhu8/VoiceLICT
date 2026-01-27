@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VoiceLICT Dashboard - Submit issues and see trending problems">
+    <title>Dashboard - VoiceLICT</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <a href="dashboard.html" class="navbar-logo">
+                    <span>🎤</span> VoiceLICT
+                </a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" id="mobileMenuToggle">☰</button>
+                <ul class="navbar-links" id="navbarLinks">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="submissions.html">My Submissions</a></li>
+                    <li>
+                        <div class="navbar-user">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <span id="userName">User</span>
+                            <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <h1 class="welcome-message" id="welcomeMessage">Welcome back!</h1>
+            <p class="welcome-subtitle">What's on your mind today?</p>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-12);">
+        <div class="dashboard-grid">
+            <!-- Submission Form -->
+            <section class="submission-form">
+                <h2 style="font-size: var(--text-2xl); font-weight: 700; margin-bottom: var(--space-6); display: flex; align-items: center; gap: var(--space-2);">
+                    📢 Submit Your Problem
+                </h2>
+                
+                <form id="submissionForm">
+                    <div class="form-group">
+                        <label for="problemTitle" class="form-label">Problem Title *</label>
+                        <input 
+                            type="text" 
+                            id="problemTitle" 
+                            class="form-input" 
+                            placeholder="E.g., WiFi not working in Block B"
+                            required
+                            maxlength="100"
+                        >
+                        <span class="form-error">Please enter a title for your problem</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="problemDescription" class="form-label">Description *</label>
+                        <textarea 
+                            id="problemDescription" 
+                            class="form-textarea" 
+                            placeholder="Describe your problem in detail..."
+                            required
+                            maxlength="1000"
+                        ></textarea>
+                        <span class="form-error">Please provide a description</span>
+                        <div style="text-align: right; font-size: var(--text-xs); color: var(--gray-600); margin-top: var(--space-1);">
+                            <span id="charCount">0</span>/1000 characters
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Attach Files (Optional)</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="file-upload-icon">📎</div>
+                            <div class="file-upload-text">
+                                <strong>Click to upload</strong> or drag and drop
+                            </div>
+                            <div class="file-upload-hint">
+                                Images (JPG, PNG) up to 5MB<br>
+                                Videos (MP4) up to 50MB<br>
+                                Audio (MP3, WAV) up to 10MB
+                            </div>
+                        </div>
+                        <input 
+                            type="file" 
+                            id="fileInput" 
+                            multiple 
+                            accept="image/jpeg,image/png,video/mp4,audio/mpeg,audio/wav"
+                            style="display: none;"
+                        >
+                        <div id="filePreviewList" class="file-preview-list"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="anonymousCheckbox">
+                            <label for="anonymousCheckbox">Submit anonymously</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" id="submitBtn">
+                        Submit Problem
+                    </button>
+                </form>
+            </section>
+
+            <!-- Trending Issues Sidebar -->
+            <aside class="trending-issues">
+                <h2 class="trending-title">
+                    🔥 Trending at LICT
+                </h2>
+                
+                <div id="trendingContent">
+                    <div class="loader" style="margin: 40px auto;"></div>
+                </div>
+                
+                <a href="submissions.html" class="btn btn-secondary" style="width: 100%; margin-top: var(--space-6);">
+                    View My Submissions →
+                </a>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="static/js/main.js"></script>
+    <script src="static/js/auth.js"></script>
+    <script src="static/js/upload.js"></script>
+    <script src="static/js/api.js"></script>
+    
+    <script>
+        // Check authentication on page load
+        window.addEventListener('load', async () => {
+            const user = checkAuth();
+            if (!user) return;
+            
+            // Update UI with user info
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${user.name}!`;
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+            
+            // Load trending issues
+            loadTrendingIssues();
+        });
+        
+        // Character counter
+        const descriptionField = document.getElementById('problemDescription');
+        const charCount = document.getElementById('charCount');
+        
+        descriptionField.addEventListener('input', () => {
+            const count = descriptionField.value.length;
+            charCount.textContent = count;
+            
+            if (count > 900) {
+                charCount.style.color = 'var(--warning)';
+            } else {
+                charCount.style.color = 'var(--gray-600)';
+            }
+        });
+        
+        // Form submission
+        document.getElementById('submissionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const title = document.getElementById('problemTitle').value.trim();
+            const description = document.getElementById('problemDescription').value.trim();
+            const isAnonymous = document.getElementById('anonymousCheckbox').checked;
+            
+            // Validation
+            if (!title || !description) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                // Upload files first
+                const fileUrls = await uploadFiles();
+                
+                // Create submission
+                const response = await apiRequest('/submissions', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        file_urls: fileUrls,
+                        is_anonymous: isAnonymous
+                    })
+                });
+                
+                if (response.ok) {
+                    showToast('Problem submitted successfully! 🎉', 'success');
+                    
+                    // Reset form
+                    document.getElementById('submissionForm').reset();
+                    document.getElementById('filePreviewList').innerHTML = '';
+                    uploadedFiles = [];
+                    charCount.textContent = '0';
+                    
+                    // Reload trending issues
+                    setTimeout(() => loadTrendingIssues(), 1000);
+                } else {
+                    const error = await response.json();
+                    showToast(error.detail || 'Failed to submit problem', 'error');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Problem';
+            }
+        });
+        
+        // Load trending issues
+        async function loadTrendingIssues() {
+            const container = document.getElementById('trendingContent');
+            
+            try {
+                const response = await apiRequest('/clusters/trending');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load trending issues');
+                }
+                
+                const issues = await response.json();
+                
+                if (issues.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px 0; color: var(--gray-600);">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">📭</div>
+                            <p>No trending issues yet.<br>Be the first to report!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const listHTML = `
+                    <ul class="trending-list">
+                        ${issues.map(issue => `
+                            <li class="trending-item">
+                                <div class="trending-item-content">
+                                    <div class="trending-item-title">${escapeHtml(issue.title)}</div>
+                                    <div class="trending-item-count">
+                                        ${issue.student_count} ${issue.student_count === 1 ? 'student' : 'students'} reported
+                                    </div>
+                                </div>
+                                <span class="trending-item-badge">${issue.student_count}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                
+                container.innerHTML = listHTML;
+            } catch (error) {
+                console.error('Error loading trending issues:', error);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 0; color: var(--error);">
+                        <p>Failed to load trending issues</p>
+                        <button class="btn btn-ghost" onclick="loadTrendingIssues()" style="margin-top: 16px;">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // HTML escape function
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+            const navLinks = document.getElementById('navbarLinks');
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
